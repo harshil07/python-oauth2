@@ -637,7 +637,7 @@ class Client(httplib2.Http):
         self.method = method
 
     def request(self, uri, method="GET", body='', headers=None, 
-        redirections=httplib2.DEFAULT_MAX_REDIRECTS, connection_type=None):
+        redirections=httplib2.DEFAULT_MAX_REDIRECTS, connection_type=None, disable_realm=False):
         DEFAULT_POST_CONTENT_TYPE = 'application/x-www-form-urlencoded'
 
         if not isinstance(headers, dict):
@@ -675,6 +675,8 @@ class Client(httplib2.Http):
         elif method == "GET":
             uri = req.to_url()
         else:
+            if disable_realm == True:
+                realm = ''
             headers.update(req.to_header(realm=realm))
 
         return httplib2.Http.request(self, uri, method=method, body=body,
